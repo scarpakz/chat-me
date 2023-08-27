@@ -8,6 +8,7 @@
             <div class="form-group">
                 <input type="text" class="search-topic-input" placeholder="Type here">
             </div>
+            <button class="sign-in">Join room</button>
             <!-- <div>
                 DIV SUGGESTIONS HERE
             </div> -->
