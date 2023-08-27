@@ -8,8 +8,14 @@
         
         <div class="form-group">
           <div class="label">Enter code name</div>
-          <input type="text" name="" id="" placeholder="Type here..">
-          <button class="sign-in">Enter</button>
+          <input type="text" name="" v-model="codename" id="" placeholder="Type here..">
+          
+          <Suspense>
+            <button class="sign-in" @click="get">Enter</button>
+            <template #fallback>
+              Loading...
+            </template>
+          </Suspense>
         </div>
       </div>
       <div class="login-side">
@@ -123,22 +129,40 @@
 </style>
 <script>
 import {onMounted, onUnmounted, ref} from 'vue'
+import axios from 'axios'
+
 export default {
   name: 'HomeView',
   components: {
   },
   setup () {
+    // https://jsonplaceholder.typicode.com/posts
     let process = ref(true)
+    let loading = ref(false)
+    const codename = ref("")
 
-    onMounted('', () => {
+    const get = async () => {
+      if (codename.value == "") {
+        alert("Do not leave it blank")
+      } else {
+        await axios.post('http://localhost:3000/login', { codename: codename.value })
+        .then(() => console.log("Success"))
+        .catch((e) => alert(e))
+      }
+    }
+
+    onMounted(() => {
       process.value = true
     })
-    onUnmounted('', () => {
+    onUnmounted(() => {
       process.value = false
     })
 
     return {
-      process
+      process,
+      get,
+      loading,
+      codename
     }
   }
 }
