@@ -8,7 +8,7 @@
             <div class="form-group">
                 <input type="text" class="search-topic-input" placeholder="Type here">
             </div>
-            <button class="sign-in">Join room</button>
+            <router-link :to="{ name: 'room' }" class="sign-in">Join room </router-link>
             <!-- <div>
                 DIV SUGGESTIONS HERE
             </div> -->

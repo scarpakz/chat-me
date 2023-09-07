@@ -130,6 +130,7 @@
 <script>
 import {onMounted, onUnmounted, ref} from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'HomeView',
@@ -139,6 +140,7 @@ export default {
     // https://jsonplaceholder.typicode.com/posts
     let process = ref(true)
     let loading = ref(false)
+    const router = useRouter()
     const codename = ref("")
 
     const get = async () => {
@@ -146,7 +148,11 @@ export default {
         alert("Do not leave it blank")
       } else {
         await axios.post('http://localhost:3000/login', { codename: codename.value })
-        .then(() => console.log("Success"))
+        // await axios.post('http://localhost:3000/login', { codename: codename.value })
+        .then(() => {
+          // put in pinia
+          router.push({name: 'topic'})
+        })
         .catch((e) => alert(e))
       }
     }
