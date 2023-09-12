@@ -1,6 +1,12 @@
 <template>
     <div>
-        <div class="topic-container">
+        <div class="topic-container"
+        data-aos="fade-in"
+        data-aos-duration="1500"
+        data-aos-delay="500"
+        data-aos-once="false"
+        data-aos-anchor-placement="top-center"
+        >
             <Transition>
                 <div class="user-welcome">Hey, user!</div>
             </Transition>
@@ -8,7 +14,11 @@
             <div class="form-group">
                 <input type="text" class="search-topic-input" placeholder="Type here">
             </div>
-            <router-link :to="{ name: 'room' }" class="sign-in">Join room </router-link>
+            <router-link :to="{ name: 'room' }" class="sign-in"
+            data-aos="fade-up"
+            data-aos-duration="1500"
+            data-aos-delay="1500"
+            >Join room </router-link>
             <!-- <div>
                 DIV SUGGESTIONS HERE
             </div> -->

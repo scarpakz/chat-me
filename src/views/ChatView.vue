@@ -8,7 +8,13 @@
                 <a>Sign out</a>
             </div>
         </div>
-        <div class="chat-container mt-lg ml-lg mr-lg">
+        <div class="chat-container mt-lg ml-lg mr-lg"
+        data-aos="fade-in"
+        data-aos-duration="1500"
+        data-aos-delay="500"
+        data-aos-once="false"
+        data-aos-anchor-placement="top-center"
+        >
             <div class="chat-options">
                 <div class="font-lg">
                     Topic: Anime
@@ -21,7 +27,8 @@
                 </div>
             </div>
             <div class="chat-discussion mt-md">
-                <div class="discussion-placeholder bg-white">
+                <div class="discussion-placeholder bg-white"
+                >
                     <template v-for="item in messages" :key="item.id">
                         <GuestMessage :userinfo="item"/>
                     </template>

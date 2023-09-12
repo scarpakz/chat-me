@@ -3,10 +3,28 @@
     <div class="login-container">
       <div class="login-form">
         <Transition>
-          <h1 class="brand" v-show="process">CHAT-ME</h1>
+          <h1 class="brand" v-show="process"
+          data-aos="slide-right"
+          data-aos-offset="200"
+          data-aos-delay="50"
+          data-aos-duration="1500"
+          data-aos-easing="ease-in-out"
+          data-aos-mirror="true"
+          data-aos-once="false"
+          data-aos-anchor-placement="top-center"
+          >CHAT-ME</h1>
         </Transition>
         
-        <div class="form-group">
+        <div class="form-group"
+        data-aos="fade-up"
+        data-aos-offset="200"
+        data-aos-delay="3000"
+        data-aos-duration="1000"
+        data-aos-easing="ease-in-out"
+        data-aos-mirror="true"
+        data-aos-once="false"
+        data-aos-anchor-placement="top-center"
+        >
           <div class="label">Enter code name</div>
           <input type="text" name="" v-model="codename" id="" placeholder="Type here..">
           
@@ -19,13 +37,41 @@
         </div>
       </div>
       <div class="login-side">
-        <h2>Feel bored? Chat with anyone.</h2>
-        <h2>No registration required.</h2>
+        <h2
+        data-aos="slide-left"
+        data-aos-duration="1500"
+        data-aos-delay="1500"
+        data-aos-once="false"
+        data-aos-anchor-placement="top-center"
+        >Feel bored? Chat with anyone.</h2>
+        <h2
+        data-aos="slide-left"
+        data-aos-duration="2000"
+        data-aos-delay="1600"
+        data-aos-once="false"
+        data-aos-anchor-placement="top-center"
+        >No registration required.</h2>
         <div class="side-content">
           <ul>
-            <li><img src="./../../public/checkicon.png" alt=""> Different code names everyday</li>
-            <li><img src="./../../public/checkicon.png" alt=""> Pick a tag for topics</li>
-            <li><img src="./../../public/checkicon.png" alt=""> Exchange ideas</li>
+            <li
+            data-aos="fade-in"
+            data-aos-duration="1500"
+            data-aos-delay="2000"
+            data-aos-once="false"
+            data-aos-anchor-placement="top-center"
+            ><img src="./../../public/checkicon.png" alt=""> Different code names everyday</li>
+            <li
+            data-aos="fade-in"
+            data-aos-duration="1500"
+            data-aos-delay="2500"
+            data-aos-once="false"
+            data-aos-anchor-placement="top-center"
+            ><img src="./../../public/checkicon.png" alt=""> Pick a tag for topics</li>
+            <li
+            data-aos="fade-in"
+            data-aos-duration="2000"
+            data-aos-delay="3000"
+            ><img src="./../../public/checkicon.png" alt=""> Exchange ideas</li>
           </ul>
         </div>
       </div>
