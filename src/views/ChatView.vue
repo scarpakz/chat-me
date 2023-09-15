@@ -5,7 +5,7 @@
                 <h1>Hey, user!</h1>
             </div>
             <div class="sign-out mr-lg">
-                <a>Sign out</a>
+                <a @click="signOut()">Sign out</a>
             </div>
         </div>
         <div class="chat-container mt-lg ml-lg mr-lg"
@@ -44,10 +44,15 @@
 <script>
 import { ref } from 'vue';
 import GuestMessage from './GuestMessage.vue';
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+import {useSessionStore} from './../store/sessionStore'
 
 export default {
     components: { GuestMessage },
     setup() {
+        const uss = useSessionStore()
+        const router = useRouter()
         const messages = ref([
             {
                 name: "codexyz",
@@ -92,9 +97,20 @@ export default {
                 type: "user"
             }
         ])
+        
+        const signOut = async () => {
+            await axios.delete(`http://localhost:3000/logout/${uss.codename}`)
+            .then(() => {
+                uss.resetCodeName()
+                router.push({name: 'home'})
+                
+            })
+            .catch((e) => alert(e))
+        }
 
         return {
-            messages
+            messages,
+            signOut
         }
     }
 }

@@ -177,13 +177,14 @@
 import {onMounted, onUnmounted, ref} from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useSessionStore } from '@/store/sessionStore'
 
 export default {
   name: 'HomeView',
   components: {
   },
   setup () {
-    // https://jsonplaceholder.typicode.com/posts
+    const uss = useSessionStore()
     let process = ref(true)
     let loading = ref(false)
     const router = useRouter()
@@ -194,12 +195,11 @@ export default {
         alert("Do not leave it blank")
       } else {
         await axios.post('http://localhost:3000/login', { codename: codename.value })
-        // await axios.post('http://localhost:3000/login', { codename: codename.value })
         .then(() => {
-          // put in pinia
+          uss.codename = codename.value
           router.push({name: 'topic'})
         })
-        .catch((e) => alert(e))
+        .catch((e) => alert(`${e}`))
       }
     }
 
