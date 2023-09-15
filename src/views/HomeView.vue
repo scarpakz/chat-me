@@ -195,8 +195,11 @@ export default {
         alert("Do not leave it blank")
       } else {
         await axios.post('http://localhost:3000/login', { codename: codename.value })
-        .then(() => {
-          uss.codename = codename.value
+        .then((response) => {
+          const getActiveUser = response.data.filter((item) => {
+            return item.code_name === codename.value
+          })
+          uss.setUserData(getActiveUser[0])
           router.push({name: 'topic'})
         })
         .catch((e) => alert(`${e}`))

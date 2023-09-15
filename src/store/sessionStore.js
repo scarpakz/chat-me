@@ -1,20 +1,28 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { reactive } from "vue";
 
 export const useSessionStore = defineStore('user_session', () => {
-    const codename = ref("")
-
-    const getComputedCodeName = computed(() => {
-        return codename.value
+    const user = reactive({
+        id: "",
+        codename: ""
     })
 
+    const setUserData = ({id, code_name}) => {
+        user.id = id
+        user.codename = code_name
+    }
+
     function resetCodeName() {
-        codename.value = ""
+        const reset = {
+            id: "",
+            codename: ""
+        }
+        Object.assign(user, reset)
     }
 
     return {
-        codename,
-        getComputedCodeName,
-        resetCodeName
+        resetCodeName,
+        setUserData,
+        user
     }
 })
