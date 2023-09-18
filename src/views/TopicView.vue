@@ -14,12 +14,12 @@
             <div class="form-group">
                 <input type="text" class="search-topic-input" placeholder="Type here" v-model="room_name">
             </div>
-            <router-link :to="{ name: 'room' }" class="sign-in"
+            <button class="sign-in"
             data-aos="fade-up"
             data-aos-duration="1500"
             data-aos-delay="1500"
             @click="goToRoom()"
-            >Join room </router-link>
+            >Join room </button>
             <!-- <div>
                 DIV SUGGESTIONS HERE
             </div> -->
@@ -41,12 +41,21 @@ export default {
 
         const goToRoom = async () => {
             await axios.get('http://localhost:3000/api/v1/room')
-            .then(async () => {
-                await axios.post('http://localhost:3000/api/v1/create/room', {room_name: room_name.value})
-                .then(() => {
-                    addActiveRoom()
+            .then(async (response) => {
+                const rooms = response.data
+                const getCurrentRoom = rooms.filter((item) => {
+                    return item.name == room_name.value
                 })
-                .catch((e) => console.log(e))
+                if (getCurrentRoom.length == 0) { // create room if not existing
+                    await axios.post('http://localhost:3000/api/v1/create/room', {room_name: room_name.value})
+                    .then(() => {
+                        addActiveRoom()
+                    })
+                    .catch((e) => console.log(e))
+                } else {
+                    addActiveRoom()
+                }
+                
             })
         }
 
@@ -57,11 +66,14 @@ export default {
                 const getCurrentRoom = rooms.filter((item) => { // check if same value from the input
                     return item.name == room_name.value
                 })
-                await axios.post('http://localhost:3000/api/v1/create/active_room', { user_id: uss.user.id, room_id: getCurrentRoom[0].id })
-                .then(() => {
-                    router.push({name: 'room'})
-                })
-                .catch((e) => console.log(e))
+                if (getCurrentRoom.length > 0) {
+                    await axios.post('http://localhost:3000/api/v1/create/active_room', { user_id: uss.user.id, room_id: getCurrentRoom[0].id })
+                    .then(() => {
+                        router.push({name: 'room', params: {room_id: getCurrentRoom[0].id}}) // put room id
+                    })
+                    .catch((e) => console.log(e))
+                }
+                
             })
 
         }

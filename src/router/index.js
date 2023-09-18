@@ -15,7 +15,7 @@ const routes = [
     component: TopicView
   },
   {
-    path: '/room',
+    path: '/room/:room_id',
     name: 'room',
     component: ChatView
   },
