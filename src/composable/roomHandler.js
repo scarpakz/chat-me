@@ -20,7 +20,7 @@ export default function roomHandler() {
                 })
                 .catch((e) => console.log(e))
             } else {
-                checkAndCreateActiveRoom(room_name)
+                responseMessage = await checkAndCreateActiveRoom(room_name)
             }
         })
         return responseMessage

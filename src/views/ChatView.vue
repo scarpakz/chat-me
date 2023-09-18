@@ -17,13 +17,13 @@
         >
             <div class="chat-options">
                 <div class="font-lg">
-                    Topic: Anime
+                    Topic: {{ getRoomName }}
                 </div>
                 <div>
                     <button class="sign-in" @click="chooseAnotherTopic">Choose Another Topic</button>
                 </div>
                 <div class="font-lg">
-                    <span>49 Online</span>
+                    <span>{{ users }} Online</span>
                 </div>
             </div>
             <div class="chat-discussion mt-md">
@@ -42,19 +42,22 @@
     </div>
 </template>
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import GuestMessage from './GuestMessage.vue';
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import {useSessionStore} from './../store/sessionStore'
 import { useRoom } from '@/store/room';
+import { storeToRefs } from 'pinia';
 
 export default {
     components: { GuestMessage },
     setup() {
         const ur = useRoom()
         const uss = useSessionStore()
+        const { getRoomName, getRoomId } = storeToRefs(ur)
         const router = useRouter()
+        let users = ref("")
         const messages = ref([
             {
                 name: "codexyz",
@@ -125,10 +128,26 @@ export default {
             .catch(e => console.log(e))
         }
 
+        const getTotalOnline = async () => {
+            await axios.post('http://localhost:3000/api/v1/active_room/detail', {room_id: getRoomId.value})
+            .then((response) => {
+                const data = response.data
+                users.value = data.length
+
+            })
+        }
+
+        onMounted(() => {
+            getTotalOnline()
+        })
+
         return {
             messages,
             signOut,
-            chooseAnotherTopic
+            chooseAnotherTopic,
+            getRoomName,
+            getTotalOnline,
+            users
         }
     }
 }

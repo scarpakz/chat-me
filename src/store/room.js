@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 
 export const useRoom = defineStore('store_room', () => {
     const room = reactive({
@@ -15,8 +15,18 @@ export const useRoom = defineStore('store_room', () => {
         Object.assign(room, form)
     }
 
+    const getRoomName = computed(() => {
+        return room.name
+    })
+
+    const getRoomId = computed(() => {
+        return room.id
+    })
+
     return {
         room,
-        reset
+        reset,
+        getRoomName,
+        getRoomId
     }
 })
