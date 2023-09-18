@@ -27,7 +27,6 @@
         >
           <div class="label">Enter code name</div>
           <input type="text" name="" v-model="codename" id="" placeholder="Type here..">
-          
           <Suspense>
             <button class="sign-in" @click="get">Enter</button>
             <template #fallback>
