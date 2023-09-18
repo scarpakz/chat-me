@@ -108,9 +108,16 @@ export default {
             .catch((e) => alert(e))
         }
 
+        const chooseAnotherTopic = async () => {
+            const { id } = uss.user.id
+            await axios.delete(`http://localhost:3000/api/v1/delete/active_room/${id}`)
+            .then(() => { router.push({}) })
+        }
+
         return {
             messages,
-            signOut
+            signOut,
+            chooseAnotherTopic
         }
     }
 }

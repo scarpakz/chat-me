@@ -27,55 +27,20 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
-import { useSessionStore } from '@/store/sessionStore';
+import roomHandler from '@/composable/roomHandler'
 
 export default {
     name: "TopicView",
     setup () {
-        const uss = useSessionStore()
+        const rh = roomHandler()
         const router = useRouter()
         const room_name = ref("")
 
         const goToRoom = async () => {
-            await axios.get('http://localhost:3000/api/v1/room')
-            .then(async (response) => {
-                const rooms = response.data
-                const getCurrentRoom = rooms.filter((item) => {
-                    return item.name == room_name.value
-                })
-                if (getCurrentRoom.length == 0) { // create room if not existing
-                    await axios.post('http://localhost:3000/api/v1/create/room', {room_name: room_name.value})
-                    .then(() => {
-                        addActiveRoom()
-                    })
-                    .catch((e) => console.log(e))
-                } else {
-                    addActiveRoom()
-                }
-                
-            })
-        }
-
-        const addActiveRoom = async () => {
-            await axios.get('http://localhost:3000/api/v1/room')
-            .then(async (response) => {
-                const rooms = response.data
-                const getCurrentRoom = rooms.filter((item) => { // check if same value from the input
-                    return item.name == room_name.value
-                })
-                if (getCurrentRoom.length > 0) {
-                    await axios.post('http://localhost:3000/api/v1/create/active_room', { user_id: uss.user.id, room_id: getCurrentRoom[0].id })
-                    .then(() => {
-                        router.push({name: 'room', params: {room_id: getCurrentRoom[0].id}}) // put room id
-                    })
-                    .catch((e) => console.log(e))
-                }
-                
-            })
-
+            const response = await rh.checkAndCreateRoom(room_name)
+            router.push({name: 'room', params: {room_id: response.room_id}})
         }
 
         return {
