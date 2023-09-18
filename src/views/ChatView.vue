@@ -20,7 +20,7 @@
                     Topic: Anime
                 </div>
                 <div>
-                    <button class="sign-in">Choose Another Topic</button>
+                    <button class="sign-in" @click="chooseAnotherTopic">Choose Another Topic</button>
                 </div>
                 <div class="font-lg">
                     <span>49 Online</span>
@@ -47,10 +47,12 @@ import GuestMessage from './GuestMessage.vue';
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import {useSessionStore} from './../store/sessionStore'
+import { useRoom } from '@/store/room';
 
 export default {
     components: { GuestMessage },
     setup() {
+        const ur = useRoom()
         const uss = useSessionStore()
         const router = useRouter()
         const messages = ref([
@@ -100,18 +102,27 @@ export default {
         
         const signOut = async () => {
             await axios.delete(`http://localhost:3000/logout/${uss.codename}`)
-            .then(() => {
-                uss.resetCodeName()
-                router.push({name: 'home'})
-                
+            .then(async () => {
+                const { id } = uss.user
+                await axios.delete(`http://localhost:3000/api/v1/delete/active_room/${id}`)
+                .then(() => { 
+                    uss.resetCodeName()
+                    ur.reset()
+                    router.push({name: 'home'})
+                 })
+                .catch(e => console.log(e))
             })
             .catch((e) => alert(e))
         }
 
         const chooseAnotherTopic = async () => {
-            const { id } = uss.user.id
+            const { id } = uss.user
             await axios.delete(`http://localhost:3000/api/v1/delete/active_room/${id}`)
-            .then(() => { router.push({}) })
+            .then(() => { 
+                ur.reset()
+                router.push({ name: 'topic' })
+            })
+            .catch(e => console.log(e))
         }
 
         return {
