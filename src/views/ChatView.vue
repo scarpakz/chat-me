@@ -35,28 +35,31 @@
                 </div>
             </div>
             <div class="chat-own">
-                <textarea name="" id="" cols="30" rows="3" placeholder="Type here.."></textarea><br>
-                <button class="send-btn">Send</button>
+                <textarea name="" id="" cols="30" rows="3" placeholder="Type here.." v-model="textMessage"></textarea><br>
+                <button class="send-btn" @click="sendMessage">Send</button>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import GuestMessage from './GuestMessage.vue';
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import {useSessionStore} from './../store/sessionStore'
 import { useRoom } from '@/store/room';
 import { storeToRefs } from 'pinia';
+import roomHandler from '@/composable/roomHandler';
 
 export default {
     components: { GuestMessage },
     setup() {
         const ur = useRoom()
         const uss = useSessionStore()
+        const rh = roomHandler()
         const { getRoomName, getRoomId } = storeToRefs(ur)
         const router = useRouter()
+        const textMessage = ref("")
         let users = ref("")
         const messages = ref([
             {
@@ -137,8 +140,22 @@ export default {
             })
         }
 
+        const sendMessage = async () => {
+            await rh.createMessage({room_id: getRoomId.value, inbox: textMessage.value})
+        }
+
+        const getMessages = async () => {
+            await rh.getMessage(getRoomId.value)
+            // messages.value = response.data
+        }
+
         onMounted(() => {
             getTotalOnline()
+            getMessages()
+        })
+
+        watch(messages, () => {
+            getMessages()
         })
 
         return {
@@ -147,7 +164,9 @@ export default {
             chooseAnotherTopic,
             getRoomName,
             getTotalOnline,
-            users
+            users,
+            textMessage,
+            sendMessage
         }
     }
 }

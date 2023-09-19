@@ -71,8 +71,24 @@ export default function roomHandler() {
 
     }
 
+    const getMessage = async (room_id) => {
+        let data = reactive({})
+        await axios.post('http://localhost:3000/api/v1/room/message', {
+            room_id
+        })
+        .then((response) => {
+            data = response.data
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+        return data
+    }
+
     return {
         checkAndCreateRoom,
-        checkAndCreateActiveRoom
+        checkAndCreateActiveRoom,
+        createMessage,
+        getMessage
     }
 }
